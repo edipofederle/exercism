@@ -1,30 +1,14 @@
 (ns rna-transcription
   (:require [clojure.string :as string :refer [join]]))
 
-(def map {"C" "G"
-    "G" "C"
-    "A" "U"
-    "T" "A"})
+(defn dna-to-rna [n]
+  (cond 
+    (= n \C) "G"
+    (= n \G) "C"
+    (= n \A) "U"
+    (= n \T) "A"
+    :else (throw (AssertionError. "my exception message"))))
 
-(defn is-valid-chain? [chain]
-  (empty?
-   (remove
-    (fn [n] (some #(= n %) (keys map)))
-    (string/split chain #""))))
-
-(defn to-rna [rna]
-  (if-not (is-valid-chain? rna)
-    (throw (AssertionError. "my exception message")))
-  (join
-   (reduce 
-    (fn [coll, rna] 
-      (conj coll (map rna)))
-    []
-    (string/split rna #""))))
-
-
-
-
-
-
+(defn to-rna [dna-stran]
+  (join (map dna-to-rna dna-stran)))
 
